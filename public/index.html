@@ -319,7 +319,10 @@ function renderCalendar(){
     
     for(let i=0;i<adjustedStart;i++)h+='<div class="calendar-day disabled"></div>';
     for(let d=1;d<=td;d++){
-        const dt=new Date(y,m,d),ds=dt.toISOString().split('T')[0],dw=dt.getDay();
+        const dt=new Date(y,m,d);
+        // Format date as YYYY-MM-DD without timezone conversion
+        const ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+        const dw=dt.getDay();
         const closed=dw===4||dw===5,past=dt<today,isToday=dt.getTime()===today.getTime(),sel=selectedDate===ds;
         let cls='calendar-day';if(past)cls+=' disabled';else if(closed)cls+=' closed';if(isToday)cls+=' today';if(sel)cls+=' selected';
         h+=`<div class="${cls}" ${!past&&!closed?`onclick="selectDate('${ds}')"`:``}>${d}</div>`;
