@@ -204,6 +204,7 @@ app.get('/api/schedule', (req, res) => {
 // Get available slots for a date and treatment
 app.get('/api/slots/:date/:treatmentId', (req, res) => {
     const { date, treatmentId } = req.params;
+    const showAll = req.query.showAll === 'true';
     
     if (!isDayOpen(date)) {
         return res.json({ available: false, message: 'Clinic is closed on this day', slots: [] });
@@ -215,11 +216,21 @@ app.get('/api/slots/:date/:treatmentId', (req, res) => {
     }
     
     const allSlots = generateTimeSlots(date, treatment.duration);
-    const availableSlots = allSlots.filter(slot => 
-        isSlotAvailable(date, slot.start, slot.end)
-    );
     
-    res.json({ available: true, slots: availableSlots });
+    if (showAll) {
+        // Return all slots with booked status
+        const slotsWithStatus = allSlots.map(slot => ({
+            ...slot,
+            booked: !isSlotAvailable(date, slot.start, slot.end)
+        }));
+        res.json({ available: true, slots: slotsWithStatus });
+    } else {
+        // Return only available slots (old behavior)
+        const availableSlots = allSlots.filter(slot => 
+            isSlotAvailable(date, slot.start, slot.end)
+        );
+        res.json({ available: true, slots: availableSlots });
+    }
 });
 
 // Patient login/register
