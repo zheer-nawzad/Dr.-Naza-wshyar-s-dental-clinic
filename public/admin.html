@@ -343,8 +343,12 @@ function to12Hour(time24){
 // Get day name
 function getDayName(ds){
     const d=new Date(ds);
-    const dayIndex=[6,0,1,2,3,4,5][d.getDay()]; // Convert JS day to our format (Sat first)
-    return t('days')[dayIndex];
+    const jsDay=d.getDay(); // 0=Sunday, 1=Monday, ..., 6=Saturday
+    // Our array: ['شەمە','١ شەمە','٢ شەمە','٣ شەمە','٤ شەمە','٥ شەمە','هەینی']
+    // Index:      0=Sat,  1=Sun,    2=Mon,    3=Tue,    4=Wed,    5=Thu,    6=Fri
+    // JS Day:     6=Sat,  0=Sun,    1=Mon,    2=Tue,    3=Wed,    4=Thu,    5=Fri
+    const dayMap = [1, 2, 3, 4, 5, 6, 0]; // JS day to our index
+    return t('days')[dayMap[jsDay]];
 }
 
 function setLanguage(l){
