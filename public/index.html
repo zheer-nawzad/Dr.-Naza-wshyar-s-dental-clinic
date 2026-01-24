@@ -52,6 +52,8 @@
         .time-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.75rem;margin-top:1rem}
         .time-slot{padding:1rem;text-align:center;border:2px solid var(--cream-dark);border-radius:12px;cursor:pointer;background:var(--cream);font-weight:500}
         .time-slot:hover,.time-slot.selected{border-color:var(--primary);background:var(--primary);color:white}
+        .time-slot.booked{background:var(--cream-dark);border-color:var(--cream-dark);color:var(--text-light);cursor:not-allowed;opacity:0.7;display:flex;flex-direction:column;gap:0.2rem}
+        .time-slot.booked small{font-size:0.7rem;color:var(--danger)}
         .status-badge{display:inline-flex;padding:0.4rem 0.8rem;border-radius:20px;font-size:0.8rem;font-weight:500}
         .status-pending{background:rgba(253,203,110,0.2);color:#d68f00}
         .status-confirmed{background:rgba(0,184,148,0.15);color:var(--success)}
@@ -199,7 +201,7 @@ const T = {
         newBooking:'📅 نۆرەی نوێ',myBookings:'📋 نۆرەکانم',stepTreatment:'چارەسەر',stepDate:'بەروار',stepTime:'کات',stepConfirm:'دووپات',
         selectTreatment:'جۆری چارەسەر هەڵبژێرە',selectDate:'بەرواری نۆرە هەڵبژێرە',selectTime:'کاتی نۆرە هەڵبژێرە',closedDaysNote:'کلینیک پێنجشەممە و هەینی داخراوە',back:'گەڕانەوە',
         confirmBooking:'پشتڕاستکردنەوەی نۆرە',treatment:'چارەسەر:',date:'بەروار:',time:'کات:',duration:'ماوە:',notesLabel:'تێبینی (ئارەزوومەندانە)',confirmNote:'بەڕێوەبەر پەیوەندیت پێوەدەکات بۆ دڵنیابوونەوە',confirmBtn:'نۆرە دڵنیابکەوە',
-        loading:'بارکردن...',noBookings:'هیچ نۆرەیەکت نییە',noSlots:'هیچ کاتێکی بەردەست نییە',clinicName:'کلینیکی ددانی د. نازە وشیار',admin:'بەڕێوەبەرایەتی',minutes:'خولەک',
+        loading:'بارکردن...',noBookings:'هیچ نۆرەیەکت نییە',noSlots:'هیچ کاتێکی بەردەست نییە',booked:'نۆرەکراوە',clinicName:'کلینیکی ددانی د. نازە وشیار',admin:'بەڕێوەبەرایەتی',minutes:'خولەک',
         bookingSuccess:'نۆرەکەت بە سەرکەوتوویی تۆمارکرا!',fillFields:'تکایە هەموو خانەکان پڕبکەوە',
         pending:'⏳ چاوەڕوان',confirmed:'✓ پشتڕاست',completed:'✓ تەواو',cancelled:'✗ هەڵوەشا',
         days:['شەمە','١ شەمە','٢ شەمە','٣ شەمە','٤ شەمە','٥ شەمە','هەینی'],
@@ -211,7 +213,7 @@ const T = {
         newBooking:'📅 New Booking',myBookings:'📋 My Bookings',stepTreatment:'Treatment',stepDate:'Date',stepTime:'Time',stepConfirm:'Confirm',
         selectTreatment:'Select Treatment Type',selectDate:'Select Appointment Date',selectTime:'Select Appointment Time',closedDaysNote:'Clinic is closed on Thursday and Friday',back:'Back',
         confirmBooking:'Confirm Appointment',treatment:'Treatment:',date:'Date:',time:'Time:',duration:'Duration:',notesLabel:'Notes (Optional)',confirmNote:'Admin will call you to confirm',confirmBtn:'Confirm Booking',
-        loading:'Loading...',noBookings:'No appointments yet',noSlots:'No time slots available',clinicName:'Dr. Naza Wshyar Dental Clinic',admin:'Administration',minutes:'min',
+        loading:'Loading...',noBookings:'No appointments yet',noSlots:'No time slots available',booked:'Booked',clinicName:'Dr. Naza Wshyar Dental Clinic',admin:'Administration',minutes:'min',
         bookingSuccess:'Your appointment has been booked!',fillFields:'Please fill all fields',
         pending:'⏳ Pending',confirmed:'✓ Confirmed',completed:'✓ Completed',cancelled:'✗ Cancelled',
         days:['Sat','Sun','Mon','Tue','Wed','Thu','Fri'],
@@ -223,7 +225,7 @@ const T = {
         newBooking:'📅 حجز جديد',myBookings:'📋 حجوزاتي',stepTreatment:'العلاج',stepDate:'التاريخ',stepTime:'الوقت',stepConfirm:'تأكيد',
         selectTreatment:'اختر نوع العلاج',selectDate:'اختر تاريخ الموعد',selectTime:'اختر وقت الموعد',closedDaysNote:'العيادة مغلقة يومي الخميس والجمعة',back:'رجوع',
         confirmBooking:'تأكيد الموعد',treatment:'العلاج:',date:'التاريخ:',time:'الوقت:',duration:'المدة:',notesLabel:'ملاحظات (اختياري)',confirmNote:'سيتصل بك المسؤول للتأكيد',confirmBtn:'تأكيد الحجز',
-        loading:'جاري التحميل...',noBookings:'لا توجد مواعيد',noSlots:'لا توجد أوقات متاحة',clinicName:'عيادة د. نازه وشیار لطب الأسنان',admin:'الإدارة',minutes:'دقيقة',
+        loading:'جاري التحميل...',noBookings:'لا توجد مواعيد',noSlots:'لا توجد أوقات متاحة',booked:'محجوز',clinicName:'عيادة د. نازه وشیار لطب الأسنان',admin:'الإدارة',minutes:'دقيقة',
         bookingSuccess:'تم حجز موعدك بنجاح!',fillFields:'يرجى ملء جميع الحقول',
         pending:'⏳ قيد الانتظار',confirmed:'✓ مؤكد',completed:'✓ مكتمل',cancelled:'✗ ملغي',
         days:['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
@@ -332,9 +334,9 @@ async function selectDate(ds){selectedDate=ds;renderCalendar();await loadTimeSlo
 
 async function loadTimeSlots(){
     document.getElementById('timeSlotsContainer').innerHTML=`<div class="loading"><span class="spinner"></span>${t('loading')}</div>`;
-    const r=await fetch(`/api/slots/${selectedDate}/${selectedTreatment.id}`);const d=await r.json();
-    if(!d.available||!d.slots.length){document.getElementById('timeSlotsContainer').innerHTML=`<div class="message message-error">❌ ${t('noSlots')}</div>`;return;}
-    document.getElementById('timeSlotsContainer').innerHTML=`<div class="time-slots">${d.slots.map(s=>`<div class="time-slot" onclick="selectSlot('${s.start}','${s.end}')">${to12Hour(s.start)} - ${to12Hour(s.end)}</div>`).join('')}</div>`;
+    const r=await fetch(`/api/slots/${selectedDate}/${selectedTreatment.id}?showAll=true`);const d=await r.json();
+    if(!d.slots||!d.slots.length){document.getElementById('timeSlotsContainer').innerHTML=`<div class="message message-error">❌ ${t('noSlots')}</div>`;return;}
+    document.getElementById('timeSlotsContainer').innerHTML=`<div class="time-slots">${d.slots.map(s=>s.booked?`<div class="time-slot booked"><span>${to12Hour(s.start)} - ${to12Hour(s.end)}</span><small>${t('booked')}</small></div>`:`<div class="time-slot" onclick="selectSlot('${s.start}','${s.end}')">${to12Hour(s.start)} - ${to12Hour(s.end)}</div>`).join('')}</div>`;
 }
 
 function selectSlot(st,en){selectedSlot={start:st,end:en};document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));event.target.classList.add('selected');setTimeout(()=>goToStep(4),300);}
