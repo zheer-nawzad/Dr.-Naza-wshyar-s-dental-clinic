@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 3000;
 
 // Turso Database Connection
 const db = createClient({
-    url: process.env.TURSO_URL || 'libsql://dental-clinic-zheer-nawzad.aws-ap-south-1.turso.io',
-    authToken: process.env.TURSO_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzQ1ODc3MTAsImlhdCI6MTc2OTQwMzcxMCwiaWQiOiJhY2M5YmE5NS0zZGJkLTQ5OWItODk4Yy1iNTU4MWJhMjZmY2MiLCJyaWQiOiI1NmUwMTc0OS1mYTliLTQ3ZmYtYmI3My0wYzZmOTA2ZTQ1ZGMifQ.KDBcsHcMXSEG3s_WurTe2xFRp40PPHVodoX4g12YNOiaotuDR8J7pA2Lg5ZPrSJW9ulr2JT6PDTe7fOLM_tsAg'
+    url: process.env.TURSO_URL || 'libsql://dental-clinic-me-zheer-nawzad.aws-eu-west-1.turso.io',
+    authToken: process.env.TURSO_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzcxODE5ODEsImlhdCI6MTc2OTQwNTk4MSwiaWQiOiI3MDE2YWU3MS03ZTM5LTRmMTUtOGIxNS00MWFkYTUwNWY1NTEiLCJyaWQiOiJmOGRjODFjNi0wZGVjLTQ1YWYtOGI5ZS02MDk5ZGUxMGQwNzYifQ.0YrI1iWVwCNLUstJ-2RSbVf44yUmQozWNuqCfqH9tbd170jNg5EAuo0Fcph6DqYvK3w_bpcjuK6TXAATrkBCAg'
 });
 
 // Treatment types with durations (in minutes)
@@ -185,6 +185,11 @@ app.use(session({
 }));
 
 // API Routes
+
+// Serve admin page without .html
+app.get('/admin', (req, res) => {
+    res.sendFile('admin.html', { root: './public' });
+});
 
 // Get treatments
 app.get('/api/treatments', (req, res) => {
