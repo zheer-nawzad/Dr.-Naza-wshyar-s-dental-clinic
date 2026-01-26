@@ -123,7 +123,7 @@
     </div>
 
     <main class="main-container">
-        <section id="loginSection" class="card">
+        <section id="loginSection" class="card" style="display:none">
             <h2 class="card-title"><span>👤</span><span data-i18n="loginTitle">چوونەژوورەوە / تۆمارکردن</span></h2>
             <p style="color:var(--text-light);margin-bottom:1.5rem" data-i18n="loginDesc">بۆ نۆرەگرتن، تکایە ناو و ژمارە تەلەفۆنەکەت بنووسە.</p>
             <div class="login-section">
@@ -269,9 +269,6 @@ function setLanguage(l){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-    // Hide everything until auth check completes
-    document.getElementById('loginSection').style.display='none';
-    document.getElementById('bookingSection').style.display='none';
     setLanguage(localStorage.getItem('lang')||'ku');
     loadTreatments();
     checkAuth();
@@ -281,21 +278,24 @@ async function checkAuth(){
     try{
         const r=await fetch('/api/patient/check');
         const d=await r.json();
+        // Remove initial inline style
+        document.getElementById('loginSection').style.display='';
+        
         if(d.authenticated){
             document.getElementById('userName').textContent=d.name;
             document.getElementById('userPhone').textContent=d.phone;
             document.getElementById('userAvatar').textContent=d.name[0];
             document.getElementById('userBar').classList.remove('hidden');
-            document.getElementById('loginSection').style.display='none';
-            document.getElementById('bookingSection').style.display='';
+            document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('bookingSection').classList.remove('hidden');
         }else{
-            document.getElementById('loginSection').style.display='';
-            document.getElementById('bookingSection').style.display='none';
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('bookingSection').classList.add('hidden');
         }
     }catch(e){
         document.getElementById('loginSection').style.display='';
-        document.getElementById('bookingSection').style.display='none';
+        document.getElementById('loginSection').classList.remove('hidden');
+        document.getElementById('bookingSection').classList.add('hidden');
     }
 }
 
