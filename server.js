@@ -270,6 +270,20 @@ app.post('/api/patient/auth', async (req, res) => {
     }
 });
 
+// Check patient auth
+app.get('/api/patient/check', (req, res) => {
+    if (req.session.patientId) {
+        res.json({ 
+            authenticated: true, 
+            name: req.session.patientName,
+            phone: req.session.patientPhone,
+            patientId: req.session.patientId
+        });
+    } else {
+        res.json({ authenticated: false });
+    }
+});
+
 // Create appointment (patient)
 app.post('/api/appointments', async (req, res) => {
     if (!req.session.patientId) {
@@ -317,6 +331,14 @@ app.get('/api/patient/appointments', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+});
+
+// Patient logout
+app.post('/api/patient/logout', (req, res) => {
+    req.session.patientId = null;
+    req.session.patientName = null;
+    req.session.patientPhone = null;
+    res.json({ success: true });
 });
 
 // Admin login
