@@ -268,7 +268,14 @@ function setLanguage(l){
     renderCalendar();
 }
 
-document.addEventListener('DOMContentLoaded',()=>{setLanguage(localStorage.getItem('lang')||'ku');loadTreatments();checkAuth();});
+document.addEventListener('DOMContentLoaded',()=>{
+    // Hide everything until auth check completes
+    document.getElementById('loginSection').style.display='none';
+    document.getElementById('bookingSection').style.display='none';
+    setLanguage(localStorage.getItem('lang')||'ku');
+    loadTreatments();
+    checkAuth();
+});
 
 async function checkAuth(){
     try{
@@ -279,10 +286,17 @@ async function checkAuth(){
             document.getElementById('userPhone').textContent=d.phone;
             document.getElementById('userAvatar').textContent=d.name[0];
             document.getElementById('userBar').classList.remove('hidden');
-            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('loginSection').style.display='none';
+            document.getElementById('bookingSection').style.display='';
             document.getElementById('bookingSection').classList.remove('hidden');
+        }else{
+            document.getElementById('loginSection').style.display='';
+            document.getElementById('bookingSection').style.display='none';
         }
-    }catch(e){console.log('Auth check failed');}
+    }catch(e){
+        document.getElementById('loginSection').style.display='';
+        document.getElementById('bookingSection').style.display='none';
+    }
 }
 
 async function loadTreatments(){const r=await fetch('/api/treatments');treatments=await r.json();renderTreatments();}
