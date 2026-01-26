@@ -268,7 +268,22 @@ function setLanguage(l){
     renderCalendar();
 }
 
-document.addEventListener('DOMContentLoaded',()=>{setLanguage(localStorage.getItem('lang')||'ku');loadTreatments();});
+document.addEventListener('DOMContentLoaded',()=>{setLanguage(localStorage.getItem('lang')||'ku');loadTreatments();checkAuth();});
+
+async function checkAuth(){
+    try{
+        const r=await fetch('/api/patient/check');
+        const d=await r.json();
+        if(d.authenticated){
+            document.getElementById('userName').textContent=d.name;
+            document.getElementById('userPhone').textContent=d.phone;
+            document.getElementById('userAvatar').textContent=d.name[0];
+            document.getElementById('userBar').classList.remove('hidden');
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('bookingSection').classList.remove('hidden');
+        }
+    }catch(e){console.log('Auth check failed');}
+}
 
 async function loadTreatments(){const r=await fetch('/api/treatments');treatments=await r.json();renderTreatments();}
 
@@ -284,7 +299,13 @@ async function login(){
     if(d.success){document.getElementById('userName').textContent=name;document.getElementById('userPhone').textContent=phone;document.getElementById('userAvatar').textContent=name[0];document.getElementById('userBar').classList.remove('hidden');document.getElementById('loginSection').classList.add('hidden');document.getElementById('bookingSection').classList.remove('hidden');}
 }
 
-function logout(){document.getElementById('userBar').classList.add('hidden');document.getElementById('loginSection').classList.remove('hidden');document.getElementById('bookingSection').classList.add('hidden');resetBooking();}
+async function logout(){
+    await fetch('/api/patient/logout',{method:'POST'});
+    document.getElementById('userBar').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('bookingSection').classList.add('hidden');
+    resetBooking();
+}
 
 function showTab(tab){
     document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='booking'?0:1)));
