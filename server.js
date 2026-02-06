@@ -47,9 +47,17 @@ async function initDB() {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             phone TEXT UNIQUE NOT NULL,
             name TEXT NOT NULL,
+            age INTEGER,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     `);
+
+    // Add age column if not exists (for existing databases)
+    try {
+        await db.execute("ALTER TABLE patients ADD COLUMN age INTEGER");
+    } catch(e) {
+        // Column already exists
+    }
 
     await db.execute(`
         CREATE TABLE IF NOT EXISTS appointments (
@@ -231,7 +239,7 @@ app.get('/api/slots/:date/:treatmentId', async (req, res) => {
 
 // Patient login/register
 app.post('/api/patient/auth', async (req, res) => {
-    const { phone, name } = req.body;
+    const { phone, name, age } = req.body;
     
     if (!phone || !name) {
         return res.status(400).json({ error: 'Phone and name are required' });
@@ -249,13 +257,13 @@ app.post('/api/patient/auth', async (req, res) => {
         if (existing.rows.length > 0) {
             patientId = existing.rows[0].id;
             await db.execute({
-                sql: "UPDATE patients SET name = ? WHERE id = ?",
-                args: [name, patientId]
+                sql: "UPDATE patients SET name = ?, age = ? WHERE id = ?",
+                args: [name, age || null, patientId]
             });
         } else {
             const result = await db.execute({
-                sql: "INSERT INTO patients (phone, name) VALUES (?, ?)",
-                args: [cleanPhone, name]
+                sql: "INSERT INTO patients (phone, name, age) VALUES (?, ?, ?)",
+                args: [cleanPhone, name, age || null]
             });
             patientId = result.lastInsertRowid;
         }
@@ -319,7 +327,7 @@ app.get('/api/patient/appointments', async (req, res) => {
     
     try {
         const result = await db.execute({
-            sql: `SELECT a.*, p.name as patient_name, p.phone as patient_phone
+            sql: `SELECT a.*, p.name as patient_name, p.phone as patient_phone, p.age as patient_age
                   FROM appointments a
                   JOIN patients p ON a.patient_id = p.id
                   WHERE a.patient_id = ?
@@ -417,7 +425,7 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
         );
         
         const upcoming = await db.execute({
-            sql: `SELECT a.*, p.name as patient_name, p.phone as patient_phone
+            sql: `SELECT a.*, p.name as patient_name, p.phone as patient_phone, p.age as patient_age
                   FROM appointments a
                   JOIN patients p ON a.patient_id = p.id
                   WHERE a.date >= ? AND a.status != 'cancelled'
@@ -443,7 +451,7 @@ app.get('/api/admin/appointments', requireAdmin, async (req, res) => {
     const { date, status } = req.query;
     
     try {
-        let sql = `SELECT a.*, p.name as patient_name, p.phone as patient_phone
+        let sql = `SELECT a.*, p.name as patient_name, p.phone as patient_phone, p.age as patient_age
                    FROM appointments a
                    JOIN patients p ON a.patient_id = p.id
                    WHERE 1=1`;
