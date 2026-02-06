@@ -130,6 +130,7 @@
                 <div class="form-group"><label data-i18n="fullName">ناوی تەواو</label><input type="text" id="patientName"></div>
                 <div class="form-group"><label data-i18n="phoneNumber">ژمارەی مۆبایل</label><input type="tel" id="patientPhone" dir="ltr" placeholder="07XX XXX XXXX"></div>
             </div>
+            <div class="form-group" style="max-width:200px"><label data-i18n="age">تەمەن</label><input type="number" id="patientAge" min="1" max="120" placeholder="٢٥"></div>
             <button class="btn btn-primary" onclick="login()" style="width:100%"><span data-i18n="loginBtn">چوونەژوورەوە و نۆرەکردن</span></button>
         </section>
 
@@ -197,7 +198,7 @@
 const T = {
     ku: {
         doctorName:'د. نازە وشیار',doctorTitle:'پزیشکی جوانکاری و چارەسەری ددانی مناڵ و گەورە',schedule:'شەمە - یەکشەمە - دووشەمە - سێشەمە - چوارشەمە',hours:'١:٠٠ - ٧:٠٠ ئێوارە',address:'سلێمانی، بازنەی مەلیک مەحموود',addressDetail:'نزیک نەخۆشخانەی فاروق، بەرامبەر بەنزینخانەی بناری گۆیژە',googleMaps:'گۆگڵ ماپ',
-        loginTitle:'چوونەژوورەوە / تۆمارکردن',loginDesc:'بۆ نۆرەگرتن، تکایە ناو و ژمارە تەلەفۆنەکەت بنووسە.',fullName:'ناوی تەواو',phoneNumber:'ژمارەی مۆبایل',loginBtn:'چوونەژوورەوە و نۆرەکردن',logout:'دەرچوون',
+        loginTitle:'چوونەژوورەوە / تۆمارکردن',loginDesc:'بۆ نۆرەگرتن، تکایە ناو و ژمارە تەلەفۆنەکەت بنووسە.',fullName:'ناوی تەواو',phoneNumber:'ژمارەی مۆبایل',age:'تەمەن',loginBtn:'چوونەژوورەوە و نۆرەکردن',logout:'دەرچوون',
         newBooking:'📅 نۆرەی نوێ',myBookings:'📋 نۆرەکانم',stepTreatment:'چارەسەر',stepDate:'بەروار',stepTime:'کات',stepConfirm:'دووپات',
         selectTreatment:'جۆری چارەسەر هەڵبژێرە',selectDate:'بەرواری نۆرە هەڵبژێرە',selectTime:'کاتی نۆرە هەڵبژێرە',closedDaysNote:'کلینیک پێنجشەممە و هەینی داخراوە',back:'گەڕانەوە',
         confirmBooking:'پشتڕاستکردنەوەی نۆرە',treatment:'چارەسەر:',date:'بەروار:',time:'کات:',duration:'ماوە:',notesLabel:'تێبینی (ئارەزوومەندانە)',confirmNote:'بەڕێوەبەر پەیوەندیت پێوەدەکات بۆ دڵنیابوونەوە',confirmBtn:'نۆرە دڵنیابکەوە',
@@ -209,7 +210,7 @@ const T = {
     },
     en: {
         doctorName:'Dr. Naza Wshyar',doctorTitle:'Family Dentist',schedule:'Saturday - Sunday - Monday - Tuesday - Wednesday',hours:'1:00 - 7:00 PM',address:'Sulaymaniyah, Malik Mahmood Circle',addressDetail:'Near Farooq Hospital, Opposite Bnari Goizha Gas Station',googleMaps:'Google Maps',
-        loginTitle:'Login / Register',loginDesc:'To book an appointment, please enter your name and phone number.',fullName:'Full Name',phoneNumber:'Phone Number',loginBtn:'Login & Book',logout:'Logout',
+        loginTitle:'Login / Register',loginDesc:'To book an appointment, please enter your name and phone number.',fullName:'Full Name',phoneNumber:'Phone Number',age:'Age',loginBtn:'Login & Book',logout:'Logout',
         newBooking:'📅 New Booking',myBookings:'📋 My Bookings',stepTreatment:'Treatment',stepDate:'Date',stepTime:'Time',stepConfirm:'Confirm',
         selectTreatment:'Select Treatment Type',selectDate:'Select Appointment Date',selectTime:'Select Appointment Time',closedDaysNote:'Clinic is closed on Thursday and Friday',back:'Back',
         confirmBooking:'Confirm Appointment',treatment:'Treatment:',date:'Date:',time:'Time:',duration:'Duration:',notesLabel:'Notes (Optional)',confirmNote:'Admin will call you to confirm',confirmBtn:'Confirm Booking',
@@ -221,7 +222,7 @@ const T = {
     },
     ar: {
         doctorName:'د. نازه وشیار',doctorTitle:'طبيبة أسنان العائلة',schedule:'السبت - الأحد - الإثنين - الثلاثاء - الأربعاء',hours:'١:٠٠ - ٧:٠٠ مساءً',address:'السليمانية، دوار مالك محمود',addressDetail:'قرب مستشفى فاروق، مقابل محطة بناري گویژە',googleMaps:'خرائط جوجل',
-        loginTitle:'تسجيل الدخول / التسجيل',loginDesc:'لحجز موعد، يرجى إدخال اسمك ورقم هاتفك.',fullName:'الاسم الكامل',phoneNumber:'رقم الهاتف',loginBtn:'تسجيل الدخول والحجز',logout:'تسجيل الخروج',
+        loginTitle:'تسجيل الدخول / التسجيل',loginDesc:'لحجز موعد، يرجى إدخال اسمك ورقم هاتفك.',fullName:'الاسم الكامل',phoneNumber:'رقم الهاتف',age:'العمر',loginBtn:'تسجيل الدخول والحجز',logout:'تسجيل الخروج',
         newBooking:'📅 حجز جديد',myBookings:'📋 حجوزاتي',stepTreatment:'العلاج',stepDate:'التاريخ',stepTime:'الوقت',stepConfirm:'تأكيد',
         selectTreatment:'اختر نوع العلاج',selectDate:'اختر تاريخ الموعد',selectTime:'اختر وقت الموعد',closedDaysNote:'العيادة مغلقة يومي الخميس والجمعة',back:'رجوع',
         confirmBooking:'تأكيد الموعد',treatment:'العلاج:',date:'التاريخ:',time:'الوقت:',duration:'المدة:',notesLabel:'ملاحظات (اختياري)',confirmNote:'سيتصل بك المسؤول للتأكيد',confirmBtn:'تأكيد الحجز',
@@ -306,9 +307,9 @@ function renderTreatments(){
 }
 
 async function login(){
-    const name=document.getElementById('patientName').value.trim(),phone=document.getElementById('patientPhone').value.trim();
-    if(!name||!phone)return alert(t('fillFields'));
-    const r=await fetch('/api/patient/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,name})});
+    const name=document.getElementById('patientName').value.trim(),phone=document.getElementById('patientPhone').value.trim(),age=document.getElementById('patientAge').value;
+    if(!name||!phone||!age)return alert(t('fillFields'));
+    const r=await fetch('/api/patient/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,name,age:parseInt(age)})});
     const d=await r.json();
     if(d.success){document.getElementById('userName').textContent=name;document.getElementById('userPhone').textContent=phone;document.getElementById('userAvatar').textContent=name[0];document.getElementById('userBar').classList.remove('hidden');document.getElementById('loginSection').classList.add('hidden');document.getElementById('bookingSection').classList.remove('hidden');}
 }
