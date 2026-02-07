@@ -442,11 +442,12 @@ function generateWhatsAppLink(phone,name,time,date){
     // Create message
     const formattedDate=formatDate(date);
     const formattedTime=to12Hour(time);
+    const dayName=getDayName(date);
     const message=lang==='ku'?
-        `سڵاو ${name}،\n\nئەمە بیرخستنەوەیە بۆ نۆرەکەت لە کلینیکی ددانی د. نازە وشیار.\n\n📅 بەروار: ${formattedDate}\n🕐 کات: ${formattedTime}\n\nتکایە لە کاتی خۆیدا ئامادە بە.\n\nسوپاس 🦷`:
+        `سڵاو ${name}،\n\nئەمە بیرخستنەوەیە بۆ نۆرەکەت لە کلینیکی ددانی د. نازە وشیار.\n\n📆 بەروار: ${formattedDate}\n🌅 ڕۆژ: ${dayName}\n🕐 کات: ${formattedTime}\n\nتکایە لە کاتی خۆیدا ئامادە بە.\n\nبۆ هەر پرسیارێک پەیوەندی بەم ژمارەیەوە بکە\n☎️ ٠٧٧٢٥٢٠٢٤٢٤\n\nسوپاس 🦷`:
         lang==='ar'?
-        `مرحباً ${name}،\n\nهذا تذكير بموعدك في عيادة د. نازه وشیار لطب الأسنان.\n\n📅 التاريخ: ${formattedDate}\n🕐 الوقت: ${formattedTime}\n\nيرجى الحضور في الموعد المحدد.\n\nشكراً 🦷`:
-        `Hello ${name},\n\nThis is a reminder for your appointment at Dr. Naza Wshyar Dental Clinic.\n\n📅 Date: ${formattedDate}\n🕐 Time: ${formattedTime}\n\nPlease arrive on time.\n\nThank you 🦷`;
+        `مرحباً ${name}،\n\nهذا تذكير بموعدك في عيادة د. نازه وشیار لطب الأسنان.\n\n📆 التاريخ: ${formattedDate}\n🌅 اليوم: ${dayName}\n🕐 الوقت: ${formattedTime}\n\nيرجى الحضور في الموعد المحدد.\n\nللاستفسارات اتصل على:\n☎️ ٠٧٧٢٥٢٠٢٤٢٤\n\nشكراً 🦷`:
+        `Hello ${name},\n\nThis is a reminder for your appointment at Dr. Naza Wshyar Dental Clinic.\n\n📆 Date: ${formattedDate}\n🌅 Day: ${dayName}\n🕐 Time: ${formattedTime}\n\nPlease arrive on time.\n\nFor any questions, contact:\n☎️ 07725202424\n\nThank you 🦷`;
     
     return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
