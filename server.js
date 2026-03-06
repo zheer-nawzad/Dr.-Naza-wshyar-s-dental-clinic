@@ -37,7 +37,7 @@ const CLINIC_SCHEDULE = {
     closedDays: [4, 5],
     openTime: '13:00',
     closeTime: '19:00',
-    slotDuration: 15
+    slotDuration: 60 // 1 hour slots - patients can only book full hours (1:00, 2:00, 3:00...)
 };
 
 async function initDB() {
@@ -119,22 +119,27 @@ function generateTimeSlots(date, treatmentDuration) {
     let currentTime = openHour * 60 + openMin;
     const endTime = closeHour * 60 + closeMin;
     
-    while (currentTime + treatmentDuration <= endTime) {
+    // Round up treatment duration to nearest hour (60 min = 1 slot, 90 min = 2 slots)
+    const slotsNeeded = Math.ceil(treatmentDuration / 60);
+    const actualDuration = slotsNeeded * 60; // Duration in minutes (multiples of 60)
+    
+    while (currentTime + actualDuration <= endTime) {
         const hours = Math.floor(currentTime / 60);
         const mins = currentTime % 60;
         const startStr = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
         
-        const endMins = currentTime + treatmentDuration;
+        const endMins = currentTime + actualDuration;
         const endHours = Math.floor(endMins / 60);
         const endMinsRem = endMins % 60;
         const endStr = `${String(endHours).padStart(2, '0')}:${String(endMinsRem).padStart(2, '0')}`;
         
         slots.push({
             start: startStr,
-            end: endStr
+            end: endStr,
+            duration: actualDuration
         });
         
-        currentTime += CLINIC_SCHEDULE.slotDuration;
+        currentTime += CLINIC_SCHEDULE.slotDuration; // Move by 1 hour
     }
     
     return slots;
